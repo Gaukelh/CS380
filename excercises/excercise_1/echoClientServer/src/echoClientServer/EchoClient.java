@@ -12,7 +12,6 @@ public final class EchoClient {
 
     public static void main(String[] args) throws Exception {
         try (Socket socket = new Socket("localhost", 22222)) {
-            String exit = "exit";
             //output to server
             OutputStream os = socket.getOutputStream();
             PrintStream out = new PrintStream(os, true, "UTF-8");
@@ -26,11 +25,10 @@ public final class EchoClient {
             String input;
             System.out.print("Client> ");
             while((input = userReader.readLine()) != null) {
-                if(input.equals(exit)) {
-                    //rather hacky... socket.close() was not giving me what I wanted
-                    System.exit(0);
-                }
                 out.printf("%s%n", input);
+                if(input.equals("exit")){
+                    break;
+                }
                 System.out.println(br.readLine());
                 System.out.print("Client> ");
             }

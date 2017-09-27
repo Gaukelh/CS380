@@ -32,9 +32,16 @@ public final class EchoServer {
                     String input;
                     while((input = br.readLine()) != null) {
                         out.printf("Server> %s%n", input);
+                        if(input.equals("exit")){
+                            break;
+                        }
                     }
+                    socket.close();
+                    os.close();
+                    is.close();
+                    System.out.printf("Client disconnected: %s%n", address);
                 } catch (Exception e) {
-                    System.out.printf("Client disconnected: %s%n", ad);
+                    System.out.printf("Error or Client Disconnected: %s%n", ad);
                 }
             }
         }
