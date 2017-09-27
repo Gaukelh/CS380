@@ -11,13 +11,11 @@ import java.net.Socket;
 public final class EchoServer {
 
     public static void main(String[] args) throws Exception {
-        String ad = "ifyouseethisohno";
         try (ServerSocket serverSocket = new ServerSocket(22222)) {
             while (true) {
                 try (Socket socket = serverSocket.accept()) {
                     //connection setup
                     String address = socket.getInetAddress().getHostAddress();
-                    ad = address;
                     System.out.printf("Client connected: %s%n", address);
                     //output streams
                     OutputStream os = socket.getOutputStream();
@@ -36,12 +34,13 @@ public final class EchoServer {
                             break;
                         }
                     }
+                    //close down the connections
                     socket.close();
                     os.close();
                     is.close();
                     System.out.printf("Client disconnected: %s%n", address);
                 } catch (Exception e) {
-                    System.out.printf("Error or Client Disconnected: %s%n", ad);
+                    System.out.println("Error or Client Disconnected");
                 }
             }
         }
