@@ -13,18 +13,16 @@ public final class EchoServer {
     public static void main(String[] args) throws Exception {
         try (ServerSocket serverSocket = new ServerSocket(22222)) {
             while (true) {
-                try (Socket socket = serverSocket.accept()) {
+                try {
                     //connection setup
+                    final Socket socket = serverSocket.accept();
                     String address = socket.getInetAddress().getHostAddress();
                     System.out.printf("Client connected: %s%n", address);
-                    
                     Runnable ser = () -> {
                         try {
-                            System.out.println(":)");
                             //output streams
                             OutputStream os = socket.getOutputStream();
                             PrintStream out = new PrintStream(os, true, "UTF-8");
-                            System.out.println(":)");
                             out.printf("Hi %s, thanks for connecting!%n", address);
 
                             //input streams
