@@ -61,7 +61,6 @@ public class ChatClient {
             serverOut.start();
             System.out.print("Enter a username: ");
             while((userInput = userIn.readLine()) != null) {
-                System.out.println("");
                 //out to server
                 out.printf("%s%n", userInput);
                 if(userInput.equals("exit")) {
