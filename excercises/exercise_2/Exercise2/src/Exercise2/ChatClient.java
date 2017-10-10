@@ -14,7 +14,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.CRC32;
 
 /**
  *
@@ -49,36 +52,54 @@ public class ChatClient {
         } catch (Exception e) {
             System.out.println("Error in setting up connection to server: " + e);
         }
-        Runnable serverOutputThread = () -> {
-            String serverOutput;
-            try {
-                while((serverOutput = br.readLine()) != null) {
-                    System.out.println(serverOutput);
-                }
-            } catch (Exception e) {
-                System.out.println("Error in serverOutputThread creation: " + e);
+        int test;
+        int test2;
+        String comp = "";
+        int[] data = new int[100];
+        for (int i = 0; i < 100; i++) {
+            comp = "";
+            test = isr.read();
+            test2 = isr.read();
+            comp = Integer.toHexString(test) + Integer.toHexString(test2);
+            data[i] = Integer.parseInt(comp, 16);
+            
+            if(i%10 == 0) {
+                System.out.println("");
             }
-        }; 
-        String userInput;
-        try {
-            Thread serverOut = new Thread(serverOutputThread);
-            serverOut.start();
-            System.out.print("Enter a username: ");
-            while((userInput = userIn.readLine()) != null) {
-                //out to server
-                out.printf("%s%n", userInput);
-                if(userInput.equals("exit")) {
-                    break;
-                }
-            }
-            //close all input and out and socket connection
-            is.close();
-            isr.close();
-            os.close();
-            out.close();
-            socket.close();
-        } catch (Exception e) {
-            System.out.println("Error in userInput/thread creation block: " + e);
+            System.out.println(comp);
         }
+        for (int i = 0; i < data.length; i++) {
+            System.out.println("data[i] " + data[i]);
+            
+        }
+        byte[] realData = new byte[100];
+        for (int i = 0; i < data.length; i++) {
+            realData[i] = (byte)data[i];
+            System.out.println("realData: " + realData[i]);
+            
+        }
+        
+        CRC32 poop = new CRC32();
+        poop.update(realData);
+        
+        System.out.println("CRC32: " + poop.getValue());
+        System.out.println("");
+        
+        out.printf("%s", poop.getValue());
+        out.printf("%s", poop.getValue());
+        out.printf("%s", poop.getValue());
+        out.printf("%s", poop.getValue());
+        System.out.println(isr.read());
+        out.printf("%s", poop.getValue());
+        System.out.println(isr.read());
+        
+        
+        TimeUnit.SECONDS.sleep(2);
+        //close all input and out and socket connection
+        is.close();
+        isr.close();
+        os.close();
+        out.close();
+        socket.close();
     }
 }
