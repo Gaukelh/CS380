@@ -5,4 +5,4 @@ I use netbeans IDE when I work on windows machines, so my .gitignore file will b
 
 If the java files you are looking for are not in the correct folder, check the /src/ folder under that excercise/project folder
 
-I will create a new branch after finishing/before creating a project/assingment, so that if I go back to reuse and edit old code the original, submitted copy, is saved.
+I will create a new branch after finishing/before creating a project/assignment, so that if I go back to reuse and edit old code the original, submitted copy, is saved.
