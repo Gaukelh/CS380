@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.math.BigInteger;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.CRC32;
 
@@ -55,13 +55,13 @@ public class ChatClient {
         int test;
         int test2;
         String comp = "";
-        int[] data = new int[100];
+        byte[] data = new byte[100];
         for (int i = 0; i < 100; i++) {
             comp = "";
             test = isr.read();
             test2 = isr.read();
             comp = Integer.toHexString(test) + Integer.toHexString(test2);
-            data[i] = Integer.parseInt(comp, 16);
+            data[i] = (byte)Integer.parseInt(comp, 16);
             
             if(i%10 == 0) {
                 System.out.println("");
@@ -79,18 +79,15 @@ public class ChatClient {
             
         }
         
-        CRC32 poop = new CRC32();
-        poop.update(realData);
+        CRC32 thirtyTwo = new CRC32();
+        thirtyTwo.update(realData);
         
-        System.out.println("CRC32: " + poop.getValue());
-        System.out.println("");
         
-        out.printf("%s", poop.getValue());
-        out.printf("%s", poop.getValue());
-        out.printf("%s", poop.getValue());
-        out.printf("%s", poop.getValue());
-        System.out.println(isr.read());
-        out.printf("%s", poop.getValue());
+        int ret = (int)thirtyTwo.getValue();
+        ByteBuffer b = ByteBuffer.allocate(Integer.BYTES);
+        b.putInt(ret);
+
+        out.write(b.array());
         System.out.println(isr.read());
         
         
