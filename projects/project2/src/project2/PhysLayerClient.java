@@ -40,14 +40,29 @@ public class PhysLayerClient {
         } catch (Exception e) {
             System.out.println("Error in setting up connection to server: " + e);
         }
-        int baseline = 0;
+        double baseline = 0.0;
         for (int i = 0; i < 64; i++) {
-            baseline += isr.read();
+            baseline += is.read();
         }
-        baseline = baseline/64;
+        baseline /= 64.0;
         System.out.println("Baseline established from preamble: " + baseline);
-        
-        
+        //((32*8)/4)*5 =  the amount of unsigned bytes we get from server
+        int[] fivebits = new int[320];
+        for (int i = 0; i < fivebits.length; i++) {
+            //using inputstreamreader gives us characters, we want the bytes of data
+            if(is.read() > baseline) {
+                fivebits[i] = 1;
+            }
+            else {
+                fivebits[i] = 0;
+            }
+        }
+        for (int i = 0; i < fivebits.length; i++) {
+            System.out.println(fivebits[i]);
+            
+        }
+        int[] fourbits = new int[320];
+        //undo-ing NZRI
         
         
         
