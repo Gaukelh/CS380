@@ -40,11 +40,24 @@ public class PhysLayerClient {
         } catch (Exception e) {
             System.out.println("Error in setting up connection to server: " + e);
         }
+        int baseline = 0;
+        for (int i = 0; i < 64; i++) {
+            baseline += isr.read();
+        }
+        baseline = baseline/64;
+        System.out.println("Baseline established from preamble: " + baseline);
+        
+        
+        
+        
         
 
-        
-        
-        
+        if((int)isr.read() == 1) {
+            System.out.println("Response Good");
+        }
+        else {
+            System.out.println("Response Bad");
+        }
         //close all input and out and socket connection
         is.close();
         isr.close();
