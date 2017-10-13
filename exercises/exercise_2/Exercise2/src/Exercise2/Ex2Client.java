@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.CRC32;
 
 /**
