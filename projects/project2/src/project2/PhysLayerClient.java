@@ -61,7 +61,7 @@ public class PhysLayerClient {
             default:
                 break;
         }
-        return Integer.MAX_VALUE;
+        return 0;
     }
         
     //read 64 bits from server, read 320 bits from server, decode 320 bits from nzri, decode from 4b/5b, send back as array
