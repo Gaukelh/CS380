@@ -1,29 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Exercise2;
 
-/**
- *
- * @author Hunter
- */
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.math.BigInteger;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
+import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
 /**
  *
  * @author Hunter
  */
-public class ChatClient {
+public class Ex2Client {
     //socket
     private static Socket socket = null;
     //Output (what we send to server)
@@ -52,54 +42,47 @@ public class ChatClient {
         } catch (Exception e) {
             System.out.println("Error in setting up connection to server: " + e);
         }
+        System.out.println("Connected to server.");
+        System.out.println("Received bytes: ");
         int test;
         int test2;
         String comp = "";
-        int[] data = new int[100];
+        byte[] data = new byte[100];
         for (int i = 0; i < 100; i++) {
             comp = "";
             test = isr.read();
             test2 = isr.read();
             comp = Integer.toHexString(test) + Integer.toHexString(test2);
-            data[i] = Integer.parseInt(comp, 16);
-            
             if(i%10 == 0) {
+                System.out.print(" ");
+            }
+            System.out.print(comp);
+            if(i%10 == 9) {
                 System.out.println("");
             }
-            System.out.println(comp);
-        }
-        for (int i = 0; i < data.length; i++) {
-            System.out.println("data[i] " + data[i]);
-            
-        }
-        byte[] realData = new byte[100];
-        for (int i = 0; i < data.length; i++) {
-            realData[i] = (byte)data[i];
-            System.out.println("realData: " + realData[i]);
-            
+            data[i] = (byte)Integer.parseInt(comp, 16);
         }
         
-        CRC32 poop = new CRC32();
-        poop.update(realData);
-        
-        System.out.println("CRC32: " + poop.getValue());
-        System.out.println("");
-        
-        out.printf("%s", poop.getValue());
-        out.printf("%s", poop.getValue());
-        out.printf("%s", poop.getValue());
-        out.printf("%s", poop.getValue());
-        System.out.println(isr.read());
-        out.printf("%s", poop.getValue());
-        System.out.println(isr.read());
-        
-        
-        TimeUnit.SECONDS.sleep(2);
+        CRC32 thirtyTwo = new CRC32();
+        thirtyTwo.update(data);
+        int ret = (int)thirtyTwo.getValue();
+        System.out.println("Generated CRC32: " + Integer.toHexString(ret));
+        ByteBuffer b = ByteBuffer.allocate(Integer.BYTES);
+        b.putInt(ret);
+
+        out.write(b.array());
+        if((int)isr.read() == 1) {
+            System.out.println("Response Good");
+        }
+        else {
+            System.out.println("Response Bad");
+        }
         //close all input and out and socket connection
         is.close();
         isr.close();
         os.close();
         out.close();
         socket.close();
+        System.out.println("Disconnected from Server");
     }
 }
