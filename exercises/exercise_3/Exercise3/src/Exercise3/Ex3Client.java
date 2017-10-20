@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.util.zip.CRC32;
 
 /**
  *
