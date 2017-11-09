@@ -58,7 +58,7 @@ class IPPacket {
 public class Ipv6Client {
     
     public static void main(String[] args) throws IOException, UnknownHostException {
-        Socket socket = new Socket("18.221.102.182", 38004);
+        Socket socket = new Socket("198.199.115.177", 80);
         
         OutputStream output_stream = socket.getOutputStream();
         InputStream input_stream = socket.getInputStream();
