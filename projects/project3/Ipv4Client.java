@@ -113,7 +113,7 @@ public class Ipv4Client {
         output_stream.write(0);
       }
 
-      System.out.printf("%s\n\n", buffered_reader.readLine());
+     
 
     }
 
